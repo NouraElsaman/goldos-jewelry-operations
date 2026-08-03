@@ -1,1 +1,0 @@
-var e=`/assets/logo-ar-q0U_Upd1.png`;export{e as t};
