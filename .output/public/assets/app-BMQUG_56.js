@@ -1,0 +1,1 @@
+var e={name:`جوهرة تك`,shopName:`Al Asala Jewelry`,shopNameAr:`مجوهرات الأصالة`,currency:`EGP`,karats:[24,22,21,18],weightPrecision:3,moneyPrecision:2,defaultPageSize:10};export{e as t};

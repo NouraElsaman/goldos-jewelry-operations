@@ -1,0 +1,255 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+/*
+ * GoldOS design system — Luxury Enterprise Operating System.
+ *
+ * Design Philosophy:
+ * - Canvas: Warm, serene alabaster white (oklch 0.984 0.005 85)
+ * - Surfaces: Pure crisp porcelain white (oklch 1 0 0)
+ * - Accents: Champagne gold & deep burnished gold
+ * - Type: Deep charcoal slate (never pure black) for ultimate eye comfort
+ * - Borders: Hairline delicate borders with crisp contrast
+ * - Elevation: Multi-layered soft ambient shadows (Stripe & Apple style)
+ *
+ * ALL styling inherits from these semantic tokens.
+ */
+
+@theme inline {
+  /* ---- Radius scale ---- */
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 3px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 14px);
+  --radius-4xl: calc(var(--radius) + 22px);
+
+  /* ---- Color tokens ---- */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-gold-deep: var(--gold-deep);
+  --color-gold-foreground: var(--gold-foreground);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* ---- Typography ---- */
+  --font-sans: var(--font-latin);
+  --font-arabic: var(--font-ar);
+  --font-display: var(--font-latin);
+
+  /* ---- Elevation ---- */
+  --shadow-hairline: var(--elevation-hairline);
+  --shadow-soft: var(--elevation-soft);
+  --shadow-raised: var(--elevation-raised);
+  --shadow-floating: var(--elevation-floating);
+  --shadow-gold: var(--elevation-gold);
+
+  /* ---- Breakpoints ---- */
+  --breakpoint-xs: 30rem;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+}
+
+:root {
+  --radius: 0.875rem;
+
+  /* Fonts — Arabic first, Latin fallback chain */
+  --font-ar:
+    "IBM Plex Sans Arabic", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-latin:
+    "Inter", "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+
+  /* Canvas & surfaces — Warm, serene white canvas */
+  --background: oklch(0.984 0.005 85);
+  --foreground: oklch(0.22 0.014 60);
+  --surface: oklch(1 0 0);
+  --surface-muted: oklch(0.97 0.007 84);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.014 60);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.014 60);
+
+  /* Primary = deep charcoal, Accent = champagne gold */
+  --primary: oklch(0.22 0.014 62);
+  --primary-foreground: oklch(0.99 0.004 85);
+  --secondary: oklch(0.965 0.008 84);
+  --secondary-foreground: oklch(0.28 0.014 62);
+  --muted: oklch(0.965 0.008 84);
+  --muted-foreground: oklch(0.5 0.014 68);
+  --accent: oklch(0.955 0.02 87);
+  --accent-foreground: oklch(0.34 0.045 72);
+
+  /* Champagne & Burnished Gold Palette */
+  --gold: oklch(0.78 0.085 82);
+  --gold-soft: oklch(0.96 0.025 88);
+  --gold-deep: oklch(0.62 0.085 72);
+  --gold-foreground: oklch(0.22 0.02 62);
+
+  /* Refined Status Palette */
+  --destructive: oklch(0.56 0.16 26);
+  --destructive-foreground: oklch(0.99 0.004 85);
+  --success: oklch(0.55 0.13 148);
+  --success-foreground: oklch(0.99 0.004 85);
+  --warning: oklch(0.72 0.13 72);
+  --warning-foreground: oklch(0.22 0.02 62);
+  --info: oklch(0.56 0.1 245);
+  --info-foreground: oklch(0.99 0.004 85);
+
+  /* Hairline Lines & Focus Rings */
+  --border: oklch(0.925 0.006 84);
+  --border-strong: oklch(0.85 0.01 84);
+  --input: oklch(0.925 0.006 84);
+  --ring: oklch(0.62 0.085 72 / 0.35);
+
+  /* Charts */
+  --chart-1: oklch(0.78 0.085 82);
+  --chart-2: oklch(0.62 0.085 72);
+  --chart-3: oklch(0.42 0.02 62);
+  --chart-4: oklch(0.68 0.08 148);
+  --chart-5: oklch(0.64 0.09 245);
+
+  /* Sidebar */
+  --sidebar: oklch(0.992 0.004 85);
+  --sidebar-foreground: oklch(0.3 0.012 62);
+  --sidebar-primary: oklch(0.22 0.014 62);
+  --sidebar-primary-foreground: oklch(0.99 0.004 85);
+  --sidebar-accent: oklch(0.955 0.02 87);
+  --sidebar-accent-foreground: oklch(0.28 0.03 68);
+  --sidebar-border: oklch(0.935 0.006 84);
+  --sidebar-ring: oklch(0.62 0.085 72 / 0.35);
+
+  /* Layered Elevation Shadows — Crisp, weightless, modern */
+  --elevation-hairline: 0 1px 0 0 oklch(0.2 0.01 60 / 0.03);
+  --elevation-soft:
+    0 1px 2px 0 oklch(0.2 0.01 60 / 0.03),
+    0 4px 16px -2px oklch(0.2 0.01 60 / 0.04);
+  --elevation-raised:
+    0 1px 3px 0 oklch(0.2 0.01 60 / 0.04),
+    0 8px 24px -4px oklch(0.2 0.01 60 / 0.06);
+  --elevation-floating:
+    0 2px 4px 0 oklch(0.2 0.01 60 / 0.04),
+    0 20px 48px -12px oklch(0.2 0.01 60 / 0.12);
+  --elevation-gold: 0 8px 24px -8px oklch(0.62 0.085 72 / 0.3);
+
+  /* Motion */
+  --motion-fast: 120ms;
+  --motion-base: 180ms;
+  --motion-slow: 260ms;
+  --motion-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Layout rhythm */
+  --sidebar-width: 17rem;
+  --sidebar-width-icon: 4rem;
+  --topbar-height: 4.25rem;
+  --content-max: 96rem;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-latin);
+    font-feature-settings: "cv11", "ss01", "cv05";
+  }
+
+  html[lang="ar"] body {
+    font-family: var(--font-ar);
+  }
+
+  /* Tabular numbers for clean numeric alignment */
+  table,
+  [data-numeric] {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    letter-spacing: -0.018em;
+  }
+
+  ::selection {
+    background: var(--gold-soft);
+    color: var(--gold-foreground);
+  }
+
+  /* High quality focus styles */
+  :focus-visible {
+    outline: none;
+  }
+}
+
+@utility surface-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--elevation-soft);
+}
+
+@utility text-gradient-gold {
+  background: linear-gradient(135deg, var(--gold-deep), var(--gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility scrollbar-slim {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
