@@ -49,7 +49,7 @@ function ChartTooltip({
   active?: boolean;
   payload?: Array<{ value: number }>;
   label?: string;
-  formatter?: (v: number) => string;
+  formatter?: ((v: number) => string) | undefined;
 }) {
   if (!active || !payload?.length) return null;
   const value = payload[0]!.value;
@@ -107,7 +107,7 @@ export function BarChartWidget({
             tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
             axisLine={false}
             tickLine={false}
-            tickFormatter={valueFormatter}
+            {...(valueFormatter ? { tickFormatter: valueFormatter } : {})}
           />
           <Tooltip
             content={<ChartTooltip formatter={valueFormatter} />}
@@ -168,7 +168,7 @@ export function AreaChartWidget({
             tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
             axisLine={false}
             tickLine={false}
-            tickFormatter={valueFormatter}
+            {...(valueFormatter ? { tickFormatter: valueFormatter } : {})}
           />
           <Tooltip
             content={<ChartTooltip formatter={valueFormatter} />}
@@ -191,7 +191,11 @@ export function AreaChartWidget({
 
 // ── Donut / Pie chart ──────────────────────────────────────────────────────
 
-export type PieSlice = { label: string; value: number; color?: string };
+export type PieSlice = {
+  label: string;
+  value: number;
+  color?: string | undefined;
+};
 
 export function DonutChartWidget({
   data,

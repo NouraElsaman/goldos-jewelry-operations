@@ -66,13 +66,13 @@ function InventoryPage() {
     queryKey: queryKeys.inventory.list({
       page,
       pageSize: 10,
-      search: debouncedSearch || undefined,
+      ...(debouncedSearch ? { search: debouncedSearch } : {}),
     }),
     queryFn: () =>
       services.inventory.list({
         page,
         pageSize: 10,
-        search: debouncedSearch || undefined,
+        ...(debouncedSearch ? { search: debouncedSearch } : {}),
       }),
   });
 

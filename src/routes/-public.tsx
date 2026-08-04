@@ -14,7 +14,7 @@
  */
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_public")({
+export const Route = createFileRoute("/_public" as never)({
   component: PublicLayout,
 });
 

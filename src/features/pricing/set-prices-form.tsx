@@ -96,7 +96,7 @@ export function SetPricesForm({
                       error &&
                         "border-destructive focus-visible:ring-destructive",
                     )}
-                    {...register(`rates.${karat}` as `rates.24`, {
+                    {...register(`rates.${karat}` as unknown as "rates", {
                       valueAsNumber: true,
                     })}
                   />

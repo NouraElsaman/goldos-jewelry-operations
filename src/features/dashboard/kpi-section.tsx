@@ -24,11 +24,11 @@ type KpiCardDef = {
   id: string;
   labelKey: TranslationKey;
   value: string;
-  hint?: string;
+  hint?: string | undefined;
   icon: LucideIcon;
-  trend?: { value: string; direction: "up" | "down" | "flat" };
-  badge?: ReactNode;
-  accent?: boolean;
+  trend?: { value: string; direction: "up" | "down" | "flat" } | undefined;
+  badge?: ReactNode | undefined;
+  accent?: boolean | undefined;
 };
 
 /**
