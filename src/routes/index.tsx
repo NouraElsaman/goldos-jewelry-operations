@@ -325,7 +325,7 @@ function LandingPage() {
                   </div>
 
                   {/* Luxury brand composition */}
-                  <div className="relative my-auto flex flex-col items-center justify-center gap-9 py-4">
+                  <div className="relative my-auto flex flex-col items-center justify-center gap-7 py-2">
                     <motion.div
                       animate={{ y: [-8, 8, -8] }}
                       transition={{
@@ -339,7 +339,7 @@ function LandingPage() {
                       <img
                         src={LogoAr}
                         alt="جوهرة تك"
-                        className="h-40 w-auto object-contain drop-shadow-[0_18px_40px_oklch(0.62_0.085_72/0.35)] sm:h-48"
+                        className="h-32 w-auto object-contain drop-shadow-[0_18px_40px_oklch(0.62_0.085_72/0.35)] sm:h-40"
                       />
                       <span className="mt-3 rounded-full bg-gold-deep px-3.5 py-1 text-[10px] font-bold tracking-wide text-primary-foreground shadow-soft">
                         24K Ring Box
