@@ -136,11 +136,13 @@ function GoldPricesPage() {
       {/* ── Section 2: Set prices form ────────────────────────────────────── */}
       {canEdit(getCurrentRole(), "/gold-prices") && (
         <SetPricesForm
-          defaultValues={
-            Object.keys(defaultRates).length > 0
-              ? { rates: defaultRates as SetPricesFormValues["rates"] }
-              : undefined
-          }
+          {...(Object.keys(defaultRates).length > 0
+            ? {
+                defaultValues: {
+                  rates: defaultRates as SetPricesFormValues["rates"],
+                },
+              }
+            : {})}
           onSubmit={handleSetPrices}
           isSubmitting={isSubmitting}
           t={t}

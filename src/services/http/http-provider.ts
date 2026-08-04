@@ -82,6 +82,12 @@ export const httpServices: ServiceRegistry = {
 
     setPrice: (input) =>
       apiRequest<GoldPrice>("/gold-prices", { method: "POST", body: input }),
+
+    setMultiple: (input) =>
+      apiRequest<GoldPrice[]>("/gold-prices/bulk", {
+        method: "POST",
+        body: input,
+      }),
   },
 
   // ── Inventory ─────────────────────────────────────────────────────────────
