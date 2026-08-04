@@ -96,7 +96,7 @@ export function SetPricesForm({
                       error &&
                         "border-destructive focus-visible:ring-destructive",
                     )}
-                    {...register(`rates.${karat}` as `rates.24`, {
+                    {...register(`rates.${karat}` as "rates.24" | "rates.22" | "rates.21" | "rates.18" | "rates.14", {
                       valueAsNumber: true,
                     })}
                   />

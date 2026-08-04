@@ -143,17 +143,17 @@ export type PriceHistoryRow = {
   date: string;
   rates: Partial<Record<Karat, number>>;
   changePcts: Partial<Record<Karat, number>>;
-  source?: string;
+  source?: string | undefined;
 };
 
 export function groupPricesByDate(prices: GoldPrice[]): PriceHistoryRow[] {
   const map = new Map<string, PriceHistoryRow>();
 
   for (const p of prices) {
-    const existing = map.get(p.date) ?? {
+    const existing: PriceHistoryRow = map.get(p.date) ?? {
       date: p.date,
-      rates: {},
-      changePcts: {},
+      rates: {} as Partial<Record<Karat, number>>,
+      changePcts: {} as Partial<Record<Karat, number>>,
       source: p.source,
     };
     existing.rates[p.karat] = p.rate;
