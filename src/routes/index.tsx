@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "motion/react";
+import type { ReactNode } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -9,7 +9,6 @@ import {
   Coins,
   Cpu,
   FileText,
-  Gem,
   Package,
   ShieldCheck,
   ShoppingCart,
@@ -44,6 +43,29 @@ export const Route = createFileRoute("/")({
   }),
   component: LandingPage,
 });
+
+/** Soft cinematic entrance used across every section block. */
+function Reveal({
+  children,
+  delay = 0,
+  className,
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string | undefined;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 26 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
+      {...(className ? { className } : {})}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 function LandingPage() {
   const { isRTL, setLocale, locale } = useI18n();
@@ -126,42 +148,47 @@ function LandingPage() {
   return (
     <PageTransition className="min-h-screen bg-background text-foreground selection:bg-gold-soft selection:text-gold-foreground">
       {/* ── Navbar ───────────────────────────────────────────────────────────── */}
-      <nav className="sticky top-0 z-50 w-full border-b border-border/60 bg-surface/85 backdrop-blur-md supports-[backdrop-filter]:bg-surface/75">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3.5">
-          <Link to="/" className="flex items-center gap-3 outline-none">
+      <nav className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/70 backdrop-blur-xl transition-all duration-300">
+        <div className="mx-auto flex h-20 max-w-[88rem] items-center justify-between gap-6 px-6 lg:px-10">
+          <Link
+            to="/"
+            className="flex shrink-0 items-center outline-none transition-transform duration-300 hover:scale-[1.02]"
+          >
             <img
               src={LogoAr}
               alt="جوهرة تك"
-              className="h-14 w-auto object-contain"
+              className="h-14 w-auto object-contain lg:h-16"
             />
           </Link>
 
-          <div className="hidden items-center gap-8 md:flex text-sm font-medium text-muted-foreground">
-            <a
-              href="#features"
-              className="transition-colors hover:text-foreground"
-            >
-              {locale === "ar" ? "المميزات" : "Features"}
-            </a>
-            <a href="#why" className="transition-colors hover:text-foreground">
-              {locale === "ar" ? "لماذا جوهرة تك" : "Why Jowhara Tech"}
-            </a>
-            <a href="#kpis" className="transition-colors hover:text-foreground">
-              {locale === "ar" ? "الأرقام" : "Impact"}
-            </a>
+          <div className="hidden items-center gap-10 text-[0.9rem] font-medium text-muted-foreground md:flex">
+            {[
+              { href: "#features", ar: "المميزات", en: "Features" },
+              { href: "#why", ar: "لماذا جوهرة تك", en: "Why Jowhara Tech" },
+              { href: "#kpis", ar: "الأرقام", en: "Impact" },
+            ].map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="group relative py-1 transition-colors duration-300 hover:text-foreground"
+              >
+                {locale === "ar" ? link.ar : link.en}
+                <span className="absolute inset-x-0 -bottom-0.5 h-px origin-center scale-x-0 bg-gradient-to-r from-transparent via-gold to-transparent transition-transform duration-300 group-hover:scale-x-100" />
+              </a>
+            ))}
           </div>
 
           <div className="flex items-center gap-3">
             <button
               onClick={() => setLocale(locale === "ar" ? "en" : "ar")}
-              className="rounded-xl border border-border/80 bg-surface px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-surface-muted transition-all"
+              className="rounded-full border border-border/70 bg-surface/60 px-4 py-2 text-xs font-semibold text-muted-foreground backdrop-blur transition-all duration-300 hover:border-gold/40 hover:text-foreground"
             >
               {locale === "ar" ? "English" : "العربية"}
             </button>
             <Button
               variant="gold"
               onClick={() => void navigate({ to: "/login" })}
-              className="h-10 rounded-xl px-5 text-xs font-semibold gap-2 shadow-gold"
+              className="h-11 gap-2 rounded-full px-6 text-xs font-semibold shadow-gold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-floating"
             >
               <span>{locale === "ar" ? "تسجيل الدخول" : "Sign In"}</span>
               <ArrowIcon className="size-3.5" aria-hidden />
@@ -171,168 +198,185 @@ function LandingPage() {
       </nav>
 
       {/* ── Hero Section ─────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-16 pb-24 lg:pt-24 lg:pb-32">
-        {/* Ambient Lighting Grid Background */}
-        <div className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center">
-          <div className="size-[40rem] rounded-full bg-gold-soft/30 blur-3xl opacity-60" />
+      <section className="relative overflow-hidden pt-20 pb-28 lg:pt-28 lg:pb-40">
+        {/* Layered luxury lighting */}
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute inset-x-0 top-0 h-[36rem] bg-gradient-to-b from-gold-soft/45 via-background to-background" />
+          <div className="absolute start-[-10%] top-[-8rem] size-[34rem] rounded-full bg-gold-soft/50 blur-[140px]" />
+          <div className="absolute end-[-6%] top-24 size-[28rem] rounded-full bg-accent/60 blur-[130px]" />
+          <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
         </div>
 
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
+        <div className="mx-auto max-w-[88rem] px-6 lg:px-10">
+          <div className="grid items-center gap-16 lg:grid-cols-12 lg:gap-12">
             {/* Text Column */}
-            <div className="space-y-8 lg:col-span-7">
-              <div className="inline-flex items-center gap-2 rounded-full border border-gold/35 bg-gold-soft/60 px-3.5 py-1 text-xs font-semibold text-gold-deep shadow-hairline">
-                <Sparkles className="size-3.5" aria-hidden />
-                <span>
-                  {locale === "ar"
-                    ? "المنصة الأولى المخصصة لمحلات الذهب والمجوهرات في مصر"
-                    : "Built Exclusively for Egyptian Jewelry Businesses"}
-                </span>
-              </div>
+            <div className="space-y-10 lg:col-span-7">
+              <Reveal>
+                <div className="inline-flex items-center gap-2.5 rounded-full border border-gold/30 bg-surface/70 px-4 py-2 text-xs font-semibold text-gold-deep shadow-soft backdrop-blur-md">
+                  <Sparkles className="size-3.5" aria-hidden />
+                  <span>
+                    {locale === "ar"
+                      ? "المنصة الأولى المخصصة لمحلات الذهب والمجوهرات في مصر"
+                      : "Built Exclusively for Egyptian Jewelry Businesses"}
+                  </span>
+                </div>
+              </Reveal>
 
-              <div className="space-y-4">
-                <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-6xl leading-[1.12]">
-                  {locale === "ar" ? (
-                    <>
-                      منصة تشغيل متكاملة لإدارة{" "}
-                      <span className="text-gradient-gold">محلات الذهب</span>{" "}
-                      والمجوهرات
-                    </>
-                  ) : (
-                    <>
-                      The Modern Operating System for{" "}
-                      <span className="text-gradient-gold">
-                        Jewelry Businesses
-                      </span>
-                    </>
-                  )}
-                </h1>
+              <Reveal delay={0.08}>
+                <div className="space-y-7">
+                  <h1 className="text-[2.6rem] font-extrabold leading-[1.15] tracking-tight text-foreground sm:text-6xl lg:text-[4.15rem]">
+                    {locale === "ar" ? (
+                      <>
+                        منصة تشغيل متكاملة لإدارة{" "}
+                        <span className="text-gradient-gold">محلات الذهب</span>{" "}
+                        والمجوهرات
+                      </>
+                    ) : (
+                      <>
+                        The Modern Operating System for{" "}
+                        <span className="text-gradient-gold">
+                          Jewelry Businesses
+                        </span>
+                      </>
+                    )}
+                  </h1>
 
-                <p className="max-w-2xl text-base text-muted-foreground/90 sm:text-lg leading-relaxed">
-                  {locale === "ar"
-                    ? "تطبيق جوهرة تك يوحد كافة عمليات محل الذهب: إدارة المخزون بالأدراج، أسعار الذهب اليومية بالجنيه المصري، فواتير الكاشير، التقارير الضريبية، ومطابقة الأوزان."
-                    : "Jowhara Tech unifies jewelry store operations into one luxury platform: tray inventory, live EGP gold prices, smart cashier, tax reports, and weight reconciliation."}
-                </p>
-              </div>
+                  <p className="max-w-2xl text-base leading-[1.95] text-muted-foreground sm:text-[1.075rem]">
+                    {locale === "ar"
+                      ? "تطبيق جوهرة تك يوحد كافة عمليات محل الذهب: إدارة المخزون بالأدراج، أسعار الذهب اليومية بالجنيه المصري، فواتير الكاشير، التقارير الضريبية، ومطابقة الأوزان."
+                      : "Jowhara Tech unifies jewelry store operations into one luxury platform: tray inventory, live EGP gold prices, smart cashier, tax reports, and weight reconciliation."}
+                  </p>
+                </div>
+              </Reveal>
 
               {/* CTAs */}
-              <div className="flex flex-wrap items-center gap-4 pt-2">
-                <Button
-                  variant="gold"
-                  onClick={() => void navigate({ to: "/login" })}
-                  className="h-12 rounded-xl px-7 text-sm font-bold gap-2.5 shadow-gold hover:shadow-raised"
-                >
-                  <span>
-                    {locale === "ar" ? "دخول إلى النظام" : "Sign In to System"}
-                  </span>
-                  <ArrowIcon className="size-4" aria-hidden />
-                </Button>
-
-                <a href="#features">
+              <Reveal delay={0.16}>
+                <div className="flex flex-wrap items-center gap-4">
                   <Button
-                    variant="outline"
-                    className="h-12 rounded-xl px-6 text-sm font-semibold border-border/80 bg-surface hover:bg-surface-muted"
+                    variant="gold"
+                    onClick={() => void navigate({ to: "/login" })}
+                    className="h-14 gap-3 rounded-full px-9 text-sm font-bold shadow-gold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-floating"
                   >
-                    {locale === "ar" ? "استكشف المميزات" : "Explore Features"}
+                    <span>
+                      {locale === "ar" ? "دخول إلى النظام" : "Sign In to System"}
+                    </span>
+                    <ArrowIcon className="size-4" aria-hidden />
                   </Button>
-                </a>
-              </div>
+
+                  <a href="#features">
+                    <Button
+                      variant="outline"
+                      className="h-14 rounded-full border-border/70 bg-surface/60 px-8 text-sm font-semibold backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-gold/40 hover:bg-surface"
+                    >
+                      {locale === "ar" ? "استكشف المميزات" : "Explore Features"}
+                    </Button>
+                  </a>
+                </div>
+              </Reveal>
 
               {/* Quick Feature Checklist */}
-              <div className="grid grid-cols-2 gap-3 pt-4 sm:grid-cols-3 border-t border-border/60">
-                {[
-                  locale === "ar" ? "تحديث أسعار الذهب EGP" : "Live EGP Rates",
-                  locale === "ar"
-                    ? "جرد الأوزان بالأدراج"
-                    : "Tray Weight Audit",
-                  locale === "ar"
-                    ? "فواتير ضريبة القيمة المضافة"
-                    : "VAT Compliant Invoices",
-                ].map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center gap-2 text-xs font-semibold text-muted-foreground/90"
-                  >
-                    <CheckCircle2
-                      className="size-4 text-gold-deep shrink-0"
-                      aria-hidden
-                    />
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Visual Hero Composition Column (Luxury Floating Ring Box & Gold Bars) */}
-            <div className="relative flex items-center justify-center lg:col-span-5">
-              <div className="relative w-full max-w-md aspect-square rounded-3xl border border-border/80 bg-surface/90 p-8 shadow-floating backdrop-blur-md flex flex-col justify-between overflow-hidden">
-                {/* Background Ambient Glow */}
-                <div className="absolute -top-16 -end-16 size-48 rounded-full bg-gold-soft/50 blur-2xl pointer-events-none" />
-
-                {/* Card Top Label */}
-                <div className="flex items-center justify-between border-b border-border/60 pb-4 z-10">
-                  <div className="flex items-center gap-2">
-                    <span className="size-2.5 rounded-full bg-success animate-pulse shadow-[0_0_8px_0_oklch(0.55_0.13_148/0.4)]" />
-                    <span className="text-xs font-semibold text-foreground">
-                      {locale === "ar"
-                        ? "سوق الذهب المصري MKT"
-                        : "Egyptian Gold Market"}
-                    </span>
-                  </div>
-                  <span className="text-xs font-mono font-bold text-gold-deep">
-                    21K: 4,635 ج.م
-                  </span>
-                </div>
-
-                {/* Animated Luxury Jewelry Composition */}
-                <div className="my-auto relative flex flex-col items-center justify-center gap-6 py-6">
-                  {/* Floating Luxury Ring Box (Vertical slow motion) */}
-                  <motion.div
-                    animate={{ y: [-7, 7, -7] }}
-                    transition={{
-                      duration: 5.5,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                    className="relative flex items-center justify-center size-24 rounded-3xl border border-gold/40 bg-gradient-to-b from-surface to-gold-soft/40 shadow-raised p-4 z-10"
-                  >
-                    <Gem className="size-12 text-gold-deep" />
-                    <span className="absolute -bottom-2 px-2.5 py-0.5 rounded-full bg-gold-deep text-[10px] font-bold text-primary-foreground shadow-hairline">
-                      24K Ring Box
-                    </span>
-                  </motion.div>
-
-                  {/* Gold Bars (Horizontal slow motion) */}
-                  <motion.div
-                    animate={{ x: [-8, 8, -8] }}
-                    transition={{
-                      duration: 7,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                    className="flex items-center gap-3 rounded-2xl border border-border/80 bg-surface p-3.5 shadow-soft z-0"
-                  >
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-gold/30 bg-gold-soft/80 text-gold-deep font-mono text-xs font-bold">
-                      <Coins className="size-4" />
-                      <span>999.9 FINE GOLD</span>
+              <Reveal delay={0.24}>
+                <div className="grid grid-cols-1 gap-4 border-t border-border/50 pt-8 sm:grid-cols-3">
+                  {[
+                    locale === "ar" ? "تحديث أسعار الذهب EGP" : "Live EGP Rates",
+                    locale === "ar"
+                      ? "جرد الأوزان بالأدراج"
+                      : "Tray Weight Audit",
+                    locale === "ar"
+                      ? "فواتير ضريبة القيمة المضافة"
+                      : "VAT Compliant Invoices",
+                  ].map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center gap-2.5 text-xs font-semibold text-muted-foreground"
+                    >
+                      <CheckCircle2
+                        className="size-4 shrink-0 text-gold-deep"
+                        aria-hidden
+                      />
+                      <span>{item}</span>
                     </div>
-                    <span className="text-xs font-mono font-bold text-foreground">
-                      100g BAR
-                    </span>
-                  </motion.div>
+                  ))}
                 </div>
+              </Reveal>
+            </div>
 
-                {/* Card Bottom Realtime Rate Bar */}
-                <div className="rounded-2xl border border-border/70 bg-surface-muted/60 p-3.5 flex items-center justify-between text-xs z-10">
-                  <span className="text-muted-foreground font-medium">
-                    {locale === "ar" ? "آخر تحديث عيار 24" : "Today 24K Rate"}
-                  </span>
-                  <span className="font-mono font-bold text-foreground">
-                    5,300.00 ج.م/جم
-                  </span>
+            {/* Visual Hero Composition Column */}
+            <Reveal delay={0.12} className="lg:col-span-5">
+              <div className="relative flex items-center justify-center">
+                <div className="pointer-events-none absolute inset-0 -z-10 rounded-[3rem] bg-gold-soft/40 blur-[90px]" />
+
+                <div className="relative flex aspect-square w-full max-w-md flex-col justify-between overflow-hidden rounded-[2.25rem] border border-white/50 bg-surface/70 p-8 shadow-floating backdrop-blur-xl">
+                  <div className="pointer-events-none absolute -top-20 -end-20 size-56 rounded-full bg-gold-soft/60 blur-3xl" />
+
+                  {/* Card Top Label */}
+                  <div className="z-10 flex items-center justify-between border-b border-border/50 pb-4">
+                    <div className="flex items-center gap-2">
+                      <span className="size-2.5 animate-pulse rounded-full bg-success shadow-[0_0_8px_0_oklch(0.55_0.13_148/0.4)]" />
+                      <span className="text-xs font-semibold text-foreground">
+                        {locale === "ar"
+                          ? "سوق الذهب المصري MKT"
+                          : "Egyptian Gold Market"}
+                      </span>
+                    </div>
+                    <span className="font-mono text-xs font-bold text-gold-deep">
+                      21K: 4,635 ج.م
+                    </span>
+                  </div>
+
+                  {/* Luxury brand composition */}
+                  <div className="relative my-auto flex flex-col items-center justify-center gap-9 py-4">
+                    <motion.div
+                      animate={{ y: [-8, 8, -8] }}
+                      transition={{
+                        duration: 6,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                      className="relative z-10 flex flex-col items-center"
+                    >
+                      <div className="pointer-events-none absolute inset-0 -z-10 scale-125 rounded-full bg-gold-soft/70 blur-2xl" />
+                      <img
+                        src={LogoAr}
+                        alt="جوهرة تك"
+                        className="h-40 w-auto object-contain drop-shadow-[0_18px_40px_oklch(0.62_0.085_72/0.35)] sm:h-48"
+                      />
+                      <span className="mt-3 rounded-full bg-gold-deep px-3.5 py-1 text-[10px] font-bold tracking-wide text-primary-foreground shadow-soft">
+                        24K Ring Box
+                      </span>
+                    </motion.div>
+
+                    <motion.div
+                      animate={{ x: [-8, 8, -8] }}
+                      transition={{
+                        duration: 7.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                      className="z-0 flex items-center gap-3 rounded-2xl border border-white/60 bg-surface/80 p-3.5 shadow-soft backdrop-blur"
+                    >
+                      <div className="flex items-center gap-2 rounded-xl border border-gold/25 bg-gold-soft/70 px-3 py-1.5 font-mono text-xs font-bold text-gold-deep">
+                        <Coins className="size-4" />
+                        <span>999.9 FINE GOLD</span>
+                      </div>
+                      <span className="font-mono text-xs font-bold text-foreground">
+                        100g BAR
+                      </span>
+                    </motion.div>
+                  </div>
+
+                  {/* Card Bottom Realtime Rate Bar */}
+                  <div className="z-10 flex items-center justify-between rounded-2xl border border-border/60 bg-surface-muted/60 p-4 text-xs">
+                    <span className="font-medium text-muted-foreground">
+                      {locale === "ar" ? "آخر تحديث عيار 24" : "Today 24K Rate"}
+                    </span>
+                    <span className="font-mono font-bold text-foreground">
+                      5,300.00 ج.م/جم
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -340,46 +384,54 @@ function LandingPage() {
       {/* ── Features Section ─────────────────────────────────────────────────── */}
       <section
         id="features"
-        className="py-24 bg-surface-muted/40 border-y border-border/60"
+        className="relative border-y border-border/50 bg-surface-muted/35 py-28 lg:py-36"
       >
-        <div className="mx-auto max-w-7xl px-6 space-y-16">
-          <div className="text-center max-w-3xl mx-auto space-y-3">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              {locale === "ar"
-                ? "منظومة متكاملة مصممة خصيصاً لسوق الذهب"
-                : "A Complete Operating Ecosystem for Gold Shops"}
-            </h2>
-            <p className="text-sm text-muted-foreground/90 leading-relaxed">
-              {locale === "ar"
-                ? "تم تطوير تطبيق جوهرة تك ليغطي كافة جوانب عمل المحل بدءًا من دخول القطعة إلى الدرج وحتى الفاتورة والتقارير."
-                : "Engineered to cover every operational step from tray intake to cashier invoice and VAT reporting."}
-            </p>
-          </div>
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-background to-transparent" />
+        <div className="relative mx-auto max-w-[88rem] space-y-20 px-6 lg:px-10">
+          <Reveal>
+            <div className="mx-auto max-w-3xl space-y-5 text-center">
+              <span className="text-xs font-semibold uppercase tracking-[0.32em] text-gold-deep">
+                {locale === "ar" ? "المنظومة" : "The Platform"}
+              </span>
+              <h2 className="text-3xl font-bold leading-[1.3] tracking-tight text-foreground sm:text-[2.6rem]">
+                {locale === "ar"
+                  ? "منظومة متكاملة مصممة خصيصاً لسوق الذهب"
+                  : "A Complete Operating Ecosystem for Gold Shops"}
+              </h2>
+              <p className="text-[0.95rem] leading-[1.9] text-muted-foreground">
+                {locale === "ar"
+                  ? "تم تطوير تطبيق جوهرة تك ليغطي كافة جوانب عمل المحل بدءًا من دخول القطعة إلى الدرج وحتى الفاتورة والتقارير."
+                  : "Engineered to cover every operational step from tray intake to cashier invoice and VAT reporting."}
+              </p>
+            </div>
+          </Reveal>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {features.map((item) => {
+          <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+            {features.map((item, idx) => {
               const Icon = item.icon;
               return (
-                <motion.div
-                  key={item.id}
-                  whileHover={{ y: -4 }}
-                  transition={{ duration: 0.18, ease: "easeOut" }}
-                  className="group flex flex-col justify-between rounded-3xl border border-border/80 bg-surface p-7 shadow-soft hover:border-gold/40 hover:shadow-raised transition-all duration-200"
-                >
-                  <div className="space-y-4">
-                    <span className="flex size-12 items-center justify-center rounded-2xl border border-border/80 bg-surface-muted/80 text-gold-deep transition-all group-hover:border-gold/40 group-hover:bg-gold-soft group-hover:scale-105 shadow-hairline">
-                      <Icon className="size-6" aria-hidden />
-                    </span>
-                    <div className="space-y-1.5">
-                      <h3 className="text-lg font-bold tracking-tight text-foreground group-hover:text-gold-deep transition-colors">
-                        {locale === "ar" ? item.titleAr : item.titleEn}
-                      </h3>
-                      <p className="text-xs text-muted-foreground/80 leading-relaxed">
-                        {locale === "ar" ? item.descAr : item.descEn}
-                      </p>
+                <Reveal key={item.id} delay={(idx % 3) * 0.07}>
+                  <motion.div
+                    whileHover={{ y: -6 }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                    className="group relative h-full overflow-hidden rounded-[1.75rem] border border-white/60 bg-surface/80 p-8 shadow-soft backdrop-blur-md transition-all duration-300 hover:border-gold/35 hover:shadow-floating"
+                  >
+                    <div className="pointer-events-none absolute -top-24 -end-24 size-48 rounded-full bg-gold-soft/0 blur-3xl transition-all duration-500 group-hover:bg-gold-soft/70" />
+                    <div className="relative space-y-5">
+                      <span className="flex size-14 items-center justify-center rounded-2xl border border-border/70 bg-surface-muted/70 text-gold-deep shadow-hairline transition-all duration-300 group-hover:border-gold/40 group-hover:bg-gold-soft group-hover:shadow-gold">
+                        <Icon className="size-6" aria-hidden />
+                      </span>
+                      <div className="space-y-2.5">
+                        <h3 className="text-lg font-bold tracking-tight text-foreground transition-colors duration-300 group-hover:text-gold-deep">
+                          {locale === "ar" ? item.titleAr : item.titleEn}
+                        </h3>
+                        <p className="text-[0.8rem] leading-[1.95] text-muted-foreground">
+                          {locale === "ar" ? item.descAr : item.descEn}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                </Reveal>
               );
             })}
           </div>
@@ -387,21 +439,28 @@ function LandingPage() {
       </section>
 
       {/* ── Why Jowhara Tech Section ─────────────────────────────────────────── */}
-      <section id="why" className="py-24">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="grid items-center gap-12 lg:grid-cols-12">
-            <div className="space-y-6 lg:col-span-6">
-              <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl leading-tight">
-                {locale === "ar"
-                  ? "لماذا تختار جوهرة تك لإدارة محل الذهب الخاص بك؟"
-                  : "Why Top Egyptian Jewelry Stores Trust Jowhara Tech"}
-              </h2>
-
-              <p className="text-sm text-muted-foreground/90 leading-relaxed">
-                {locale === "ar"
-                  ? "بدلًا من استخدام البرامج العامة المشتتة، يقدم جوهرة تك بنية تحتية مخصصة تفهم خصوصية تجارة الذهب والمجوهرات في مصر: حسابات المصنعية، أسعار العيارات بالجنيه المصري، ومطابقة الأوزان اليومية."
-                  : "Instead of generic retail software, Jowhara Tech provides a purpose-built architecture tailored for the Egyptian gold trade: manufacturing margins, EGP karat pricing, and daily tray weight reconciliations."}
-              </p>
+      <section id="why" className="relative overflow-hidden py-28 lg:py-36">
+        <div className="pointer-events-none absolute end-[-10%] top-1/3 -z-10 size-[30rem] rounded-full bg-gold-soft/35 blur-[140px]" />
+        <div className="mx-auto max-w-[88rem] px-6 lg:px-10">
+          <div className="grid items-center gap-16 lg:grid-cols-12">
+            <div className="space-y-8 lg:col-span-6">
+              <Reveal>
+                <div className="space-y-5">
+                  <span className="text-xs font-semibold uppercase tracking-[0.32em] text-gold-deep">
+                    {locale === "ar" ? "التميّز" : "The Difference"}
+                  </span>
+                  <h2 className="text-3xl font-bold leading-[1.32] tracking-tight text-foreground sm:text-[2.5rem]">
+                    {locale === "ar"
+                      ? "لماذا تختار جوهرة تك لإدارة محل الذهب الخاص بك؟"
+                      : "Why Top Egyptian Jewelry Stores Trust Jowhara Tech"}
+                  </h2>
+                  <p className="text-[0.95rem] leading-[1.95] text-muted-foreground">
+                    {locale === "ar"
+                      ? "بدلًا من استخدام البرامج العامة المشتتة، يقدم جوهرة تك بنية تحتية مخصصة تفهم خصوصية تجارة الذهب والمجوهرات في مصر: حسابات المصنعية، أسعار العيارات بالجنيه المصري، ومطابقة الأوزان اليومية."
+                      : "Instead of generic retail software, Jowhara Tech provides a purpose-built architecture tailored for the Egyptian gold trade: manufacturing margins, EGP karat pricing, and daily tray weight reconciliations."}
+                  </p>
+                </div>
+              </Reveal>
 
               <div className="space-y-4 pt-2">
                 {[
@@ -430,30 +489,29 @@ function LandingPage() {
                       "Prepared for computer vision tray audits and POS camera logging.",
                   },
                 ].map((point, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-start gap-3.5 rounded-2xl border border-border/60 bg-surface-muted/30 p-4"
-                  >
-                    <span className="flex size-7 shrink-0 items-center justify-center rounded-xl bg-gold-soft text-gold-deep font-bold text-xs">
-                      {idx + 1}
-                    </span>
-                    <div className="space-y-0.5">
-                      <h4 className="text-sm font-bold text-foreground">
-                        {locale === "ar" ? point.titleAr : point.titleEn}
-                      </h4>
-                      <p className="text-xs text-muted-foreground/80">
-                        {locale === "ar" ? point.descAr : point.descEn}
-                      </p>
+                  <Reveal key={idx} delay={idx * 0.08}>
+                    <div className="group flex items-start gap-4 rounded-2xl border border-border/50 bg-surface/70 p-5 shadow-hairline backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-gold/30 hover:shadow-soft">
+                      <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gold-soft text-xs font-bold text-gold-deep transition-all duration-300 group-hover:shadow-gold">
+                        {idx + 1}
+                      </span>
+                      <div className="space-y-1">
+                        <h3 className="text-sm font-bold text-foreground">
+                          {locale === "ar" ? point.titleAr : point.titleEn}
+                        </h3>
+                        <p className="text-xs leading-[1.9] text-muted-foreground">
+                          {locale === "ar" ? point.descAr : point.descEn}
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  </Reveal>
                 ))}
               </div>
             </div>
 
             {/* Interactive Preview Panel */}
-            <div className="lg:col-span-6">
-              <div className="rounded-3xl border border-border/80 bg-surface p-6 shadow-floating space-y-6">
-                <div className="flex items-center justify-between border-b border-border/60 pb-4">
+            <Reveal delay={0.12} className="lg:col-span-6">
+              <div className="space-y-7 rounded-[2.25rem] border border-white/60 bg-surface/80 p-8 shadow-floating backdrop-blur-xl">
+                <div className="flex items-center justify-between border-b border-border/50 pb-5">
                   <h3 className="text-sm font-bold text-foreground">
                     {locale === "ar"
                       ? "نظرة عامة على المحل — EGP"
@@ -464,27 +522,27 @@ function LandingPage() {
                   </span>
                 </div>
 
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-border/70 bg-surface-muted/50 p-4 space-y-1">
-                    <span className="text-xs text-muted-foreground font-medium">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="space-y-1.5 rounded-2xl border border-border/60 bg-surface-muted/50 p-5 transition-all duration-300 hover:border-gold/30 hover:shadow-soft">
+                    <span className="text-xs font-medium text-muted-foreground">
                       {locale === "ar" ? "إيرادات اليوم" : "Today Revenue"}
                     </span>
-                    <p className="text-xl font-bold font-mono text-foreground">
+                    <p className="font-mono text-2xl font-bold text-foreground">
                       236,400 ج.م
                     </p>
                   </div>
-                  <div className="rounded-2xl border border-border/70 bg-surface-muted/50 p-4 space-y-1">
-                    <span className="text-xs text-muted-foreground font-medium">
+                  <div className="space-y-1.5 rounded-2xl border border-border/60 bg-surface-muted/50 p-5 transition-all duration-300 hover:border-gold/30 hover:shadow-soft">
+                    <span className="text-xs font-medium text-muted-foreground">
                       {locale === "ar" ? "وزن المخزون" : "Stock Weight"}
                     </span>
-                    <p className="text-xl font-bold font-mono text-foreground">
+                    <p className="font-mono text-2xl font-bold text-foreground">
                       2,406.47 جم
                     </p>
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-gold/30 bg-gold-soft/30 p-4 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2">
+                <div className="flex items-center justify-between rounded-2xl border border-gold/25 bg-gradient-to-r from-gold-soft/50 to-transparent p-5 text-xs">
+                  <div className="flex items-center gap-2.5">
                     <ShieldCheck className="size-5 text-gold-deep" />
                     <span className="font-semibold text-foreground">
                       {locale === "ar"
@@ -497,15 +555,23 @@ function LandingPage() {
                   </span>
                 </div>
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
 
       {/* ── KPI Showcase Section ─────────────────────────────────────────────── */}
-      <section id="kpis" className="py-20 bg-primary text-primary-foreground">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 text-center">
+      <section
+        id="kpis"
+        className="relative overflow-hidden bg-primary py-24 text-primary-foreground lg:py-28"
+      >
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent" />
+          <div className="absolute start-1/4 top-[-8rem] size-[26rem] rounded-full bg-gold/10 blur-[130px]" />
+          <div className="absolute end-1/4 bottom-[-10rem] size-[26rem] rounded-full bg-gold/10 blur-[130px]" />
+        </div>
+        <div className="relative mx-auto max-w-[88rem] px-6 lg:px-10">
+          <div className="grid gap-y-12 text-center sm:grid-cols-2 lg:grid-cols-4">
             {[
               {
                 labelAr: "فواتير يومية",
@@ -528,75 +594,88 @@ function LandingPage() {
                 value: "150+",
               },
             ].map((kpi, idx) => (
-              <div key={idx} className="space-y-1.5 p-4">
-                <p className="text-4xl font-extrabold font-mono tracking-tight text-gold sm:text-5xl">
-                  {kpi.value}
-                </p>
-                <p className="text-xs font-semibold text-primary-foreground/80 uppercase tracking-wider">
-                  {locale === "ar" ? kpi.labelAr : kpi.labelEn}
-                </p>
-              </div>
+              <Reveal key={idx} delay={idx * 0.08}>
+                <div className="space-y-3 px-4 lg:border-e lg:border-primary-foreground/10 lg:last:border-e-0">
+                  <p className="text-gradient-gold font-mono text-5xl font-extrabold tracking-tight sm:text-[3.5rem]">
+                    {kpi.value}
+                  </p>
+                  <p className="text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-primary-foreground/70">
+                    {locale === "ar" ? kpi.labelAr : kpi.labelEn}
+                  </p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* ── CTA Section ──────────────────────────────────────────────────────── */}
-      <section className="py-24">
+      <section className="relative overflow-hidden py-28 lg:py-36">
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute inset-x-0 top-1/2 mx-auto size-[36rem] -translate-y-1/2 rounded-full bg-gold-soft/40 blur-[150px]" />
+        </div>
         <div className="mx-auto max-w-5xl px-6">
-          <div className="relative overflow-hidden rounded-3xl border border-gold/40 bg-gradient-to-b from-surface to-gold-soft/30 p-10 sm:p-14 text-center shadow-floating space-y-6">
-            <div className="inline-flex size-14 items-center justify-center rounded-2xl border border-gold/40 bg-gold-soft text-gold-deep shadow-soft">
-              <Sparkles className="size-7" aria-hidden />
-            </div>
+          <Reveal>
+            <div className="relative space-y-8 overflow-hidden rounded-[2.5rem] border border-gold/30 bg-gradient-to-b from-surface/90 via-surface/80 to-gold-soft/40 p-12 text-center shadow-floating backdrop-blur-xl sm:p-16">
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent" />
 
-            <div className="space-y-2 max-w-2xl mx-auto">
-              <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-                {locale === "ar"
-                  ? "جاهز لتحديث عمليات محل الذهب الخاص بك؟"
-                  : "Ready to Modernize Your Jewelry Business?"}
-              </h2>
-              <p className="text-sm text-muted-foreground/90 leading-relaxed">
-                {locale === "ar"
-                  ? "سجّل دخولك الآن واستمتع بتجربة إدارة حديثة وفائقة السرعة مصممة خصيصاً لسوق الذهب."
-                  : "Sign in now and experience the fastest, most refined jewelry management platform."}
-              </p>
-            </div>
+              <img
+                src={LogoAr}
+                alt="جوهرة تك"
+                className="mx-auto h-20 w-auto object-contain drop-shadow-[0_12px_30px_oklch(0.62_0.085_72/0.28)]"
+              />
 
-            <div className="pt-2">
-              <Button
-                variant="gold"
-                onClick={() => void navigate({ to: "/login" })}
-                className="h-12 rounded-xl px-8 text-base font-bold gap-2.5 shadow-gold hover:shadow-raised"
-              >
-                <span>
+              <div className="mx-auto max-w-2xl space-y-4">
+                <h2 className="text-3xl font-extrabold leading-[1.3] tracking-tight text-foreground sm:text-[2.6rem]">
                   {locale === "ar"
-                    ? "تسجيل الدخول إلى النظام"
-                    : "Sign In to System"}
-                </span>
-                <ArrowIcon className="size-4.5" aria-hidden />
-              </Button>
+                    ? "جاهز لتحديث عمليات محل الذهب الخاص بك؟"
+                    : "Ready to Modernize Your Jewelry Business?"}
+                </h2>
+                <p className="text-[0.95rem] leading-[1.95] text-muted-foreground">
+                  {locale === "ar"
+                    ? "سجّل دخولك الآن واستمتع بتجربة إدارة حديثة وفائقة السرعة مصممة خصيصاً لسوق الذهب."
+                    : "Sign in now and experience the fastest, most refined jewelry management platform."}
+                </p>
+              </div>
+
+              <div className="pt-2">
+                <Button
+                  variant="gold"
+                  onClick={() => void navigate({ to: "/login" })}
+                  className="h-14 gap-3 rounded-full px-10 text-base font-bold shadow-gold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-floating"
+                >
+                  <span>
+                    {locale === "ar"
+                      ? "تسجيل الدخول إلى النظام"
+                      : "Sign In to System"}
+                  </span>
+                  <ArrowIcon className="size-4.5" aria-hidden />
+                </Button>
+              </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* ── Footer ──────────────────────────────────────────────────────────── */}
-      <footer className="border-t border-border/60 bg-surface py-12">
-        <div className="mx-auto max-w-7xl px-6 flex flex-col items-center justify-between gap-6 sm:flex-row text-xs text-muted-foreground/80">
-          <div className="flex items-center gap-3">
+      <footer className="border-t border-border/50 bg-surface/70 py-14 backdrop-blur">
+        <div className="mx-auto flex max-w-[88rem] flex-col items-center justify-between gap-8 px-6 text-xs text-muted-foreground sm:flex-row lg:px-10">
+          <div className="flex items-center gap-4">
             <img
               src={LogoAr}
               alt="جوهرة تك"
-              className="h-12 w-auto object-contain"
+              className="h-14 w-auto object-contain"
             />
-            <span className="text-[11px] font-semibold text-gold-deep border-s border-border/60 ps-3">
+            <span className="border-s border-border/60 ps-4 text-[11px] font-semibold text-gold-deep">
               {locale === "ar"
                 ? "صُنعت لمحلات الذهب والمجوهرات المصرية"
                 : "Made for Egyptian Jewelry Businesses"}
             </span>
           </div>
 
-          <p>© {new Date().getFullYear()} جوهرة تك. جميع الحقوق محفوظة.</p>
+          <p className="text-[11px]">
+            © {new Date().getFullYear()} جوهرة تك. جميع الحقوق محفوظة.
+          </p>
         </div>
       </footer>
     </PageTransition>
